@@ -75,10 +75,8 @@ class GUI:
         self.pathEntry.delete(0, END)
 
     def browse(self):
-        filename = askopenfilename()
-        self.pathEntry.insert(0,filename)
-
-        pass
+        self.filename = askopenfilename()
+        self.pathEntry.insert(0,self.filename)
 
 
 root = Tk()
