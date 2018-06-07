@@ -69,7 +69,7 @@ class GUI:
         self.cluster_button.grid(row=5, column=1)
 
     def validate(self, new_text):
-        if not new_text:  # the field is being cleared
+        '''if not new_text:  # the field is being cleared
             self.entered_number = 0
             return True
 
@@ -77,18 +77,7 @@ class GUI:
             self.entered_number = int(new_text)
             return True
         except ValueError:
-            return False
-
-    def update(self, method):
-        if method == "browse":
-            self.total += self.entered_number
-        elif method == "Pre-Process":
-            self.total -= self.entered_number
-        else:  # cluster
-            self.total = 0
-
-        self.total_label_text.set(self.total)
-        self.pathEntry.delete(0, END)
+            return False'''
 
     def browse(self):
         self.filename = tkFileDialog.askopenfilename()
@@ -103,8 +92,8 @@ class GUI:
         pass
 
     def kMeans(self):
-        cluster = KMeans(self.df, self.numOfClusEntry.get(), self.numOfRunsEntry.get())
-        self.df=dataCleaner.df
+        cluster = KMeans(self.df, int(self.numOfClusEntry.getint()), int(self.numOfRunsEntry.getint()))
+        self.df=cluster.df
         #alert user
         tkMessageBox.showinfo("K Means Clustering", "Preprocessing completed successfully!")
         pass
