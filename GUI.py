@@ -6,10 +6,17 @@ except ImportError:
     from tkinter import Tk, Label, Button, Entry, IntVar, END, W, E   ## notice lowercase 't' in tkinter here
 from tkinter.filedialog import askopenfilename
 
+import pandas as pd
+import numpy as np
+import matplotlib as plt
+from scipy.stats import mode
+
 ##from Tkinter import Tk, Label, Button, Entry, IntVar, END, W, E
 
 
 class GUI:
+
+    df=pd.DataFrame({})
 
     def __init__(self, master):
         self.master = master
@@ -77,6 +84,7 @@ class GUI:
     def browse(self):
         self.filename = askopenfilename()
         self.pathEntry.insert(0,self.filename)
+        df=pd.read_excel(self.filename)
 
 
 root = Tk()
