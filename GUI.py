@@ -4,6 +4,7 @@ try:
 except ImportError:
     # for Python3
     from tkinter import Tk, Label, Button, Entry, IntVar, END, W, E   ## notice lowercase 't' in tkinter here
+from tkinter.filedialog import askopenfilename
 
 ##from Tkinter import Tk, Label, Button, Entry, IntVar, END, W, E
 
@@ -14,14 +15,11 @@ class GUI:
         self.master = master
         master.title("K-Means Clustering")
 
-        self.total = 0
-        self.entered_number = 0
-
         #Data path
         self.pathLabel = Label(master, text="Data path:")
         vcmd = master.register(self.validate) # we have to wrap the command
         self.pathEntry = Entry(master, validate="key") ##path for data
-        self.browse_button = Button(master, text="Browse", command=lambda: self.update("browse"))
+        self.browse_button = Button(master, text="Browse", command=lambda: self.browse())
 
         #Num of clusters k
         self.numOfClusLabel = Label(master, text="Num of clusters k:")
@@ -66,15 +64,22 @@ class GUI:
             return False
 
     def update(self, method):
-        if method == "add":
+        if method == "browse":
             self.total += self.entered_number
-        elif method == "subtract":
+        elif method == "Pre-Process":
             self.total -= self.entered_number
-        else:  # reset
+        else:  # cluster
             self.total = 0
 
         self.total_label_text.set(self.total)
         self.pathEntry.delete(0, END)
+
+    def browse(self):
+        filename = askopenfilename()
+        self.pathEntry.insert(0,filename)
+
+        pass
+
 
 root = Tk()
 my_gui = GUI(root)
