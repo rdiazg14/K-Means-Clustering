@@ -103,7 +103,7 @@ class GUI:
         pass
 
     def kMeans(self):
-        cluster = KMeans(dataframe)
+        cluster = KMeans(self.df, self.numOfClusEntry.get(), self.numOfRunsEntry.get())
         self.df=dataCleaner.df
         #alert user
         tkMessageBox.showinfo("K Means Clustering", "Preprocessing completed successfully!")
