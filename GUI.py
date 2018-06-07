@@ -1,18 +1,27 @@
-try:
+'''try:
     # for Python2
     from Tkinter import Tk, Label, Button, Entry, IntVar, END, W, E   ## notice capitalized T in Tkinter
+    from Tkinter.filedialog import askopenfilename
+    from Tkinter import tkMessageBox
 except ImportError:
     # for Python3
     from tkinter import Tk, Label, Button, Entry, IntVar, END, W, E   ## notice lowercase 't' in tkinter here
-from tkinter.filedialog import askopenfilename
+    from tkinter.filedialog import askopenfilename
+   from tkinter import tkMessageBox'''
+
+
+import tkFileDialog
+import tkMessageBox
+from Tkinter import *
 
 import pandas as pd
 import numpy as np
 import matplotlib as plt
 from scipy.stats import mode
+from Tkinter import Tk, Label, Button, Entry, IntVar, END, W, E
 
-##from Tkinter import Tk, Label, Button, Entry, IntVar, END, W, E
-
+from PreProcess import *
+from KMeans import *
 
 class GUI:
 
@@ -39,10 +48,10 @@ class GUI:
         self.numOfRunsEntry = Entry(master, validate="key", validatecommand=(vcmd, '%P'))
 
         #pre process
-        self.prePro_button = Button(master, text="Pre-Process", command=lambda: self.update("Pre-Process"))
+        self.prePro_button = Button(master, text="Pre-Process", command=lambda: self.preProc())
 
         #cluster
-        self.cluster_button = Button(master, text="Cluster", command=lambda: self.update("cluster"))
+        self.cluster_button = Button(master, text="Cluster", command=lambda: self.kMeans())
 
         # LAYOUT
         self.pathLabel.grid(row=1, column=0)
@@ -82,9 +91,23 @@ class GUI:
         self.pathEntry.delete(0, END)
 
     def browse(self):
-        self.filename = askopenfilename()
+        self.filename = tkFileDialog.askopenfilename()
         self.pathEntry.insert(0,self.filename)
-        df=pd.read_excel(self.filename)
+        self.df=pd.read_excel(self.filename)
+
+    def preProc(self):
+        dataCleaner = PreProcess(dataframe)
+        self.df=dataCleaner.df
+        #alert user
+        tkMessageBox.showinfo("K Means Clustering", "Preprocessing completed successfully!")
+        pass
+
+    def kMeans(self):
+        cluster = KMeans(dataframe)
+        self.df=dataCleaner.df
+        #alert user
+        tkMessageBox.showinfo("K Means Clustering", "Preprocessing completed successfully!")
+        pass
 
 
 root = Tk()
