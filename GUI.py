@@ -69,7 +69,7 @@ class GUI:
 
         self.cluster_button.grid(row=5, column=1)
 
-
+    def validate(self, new_text):
         '''if not new_text:  # the field is being cleared
             self.entered_number = 0
             return True
