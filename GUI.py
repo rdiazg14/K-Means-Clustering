@@ -90,6 +90,9 @@ class GUI:
             tkMessageBox.showinfo("K Means Clustering", "Please choose excel file")
             return
         self.df=pd.read_excel(self.datapath)
+        if (self.df.empty or 'year' not in self.df.columns or 'country' not in self.df.columns or 'Generosity' not in self.df.columns or 'Social support' not in self.df.columns):
+            tkMessageBox.showerror("K Means Clustering", "Invalid Excel File!")
+            return
 
     def preProc(self):
         dataCleaner = PreProcess(self.df)
