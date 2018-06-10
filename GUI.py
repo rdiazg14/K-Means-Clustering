@@ -20,7 +20,7 @@ from scipy.stats import mode
 from Tkinter import Tk, Label, Button, Entry, IntVar, END, W, E
 import matplotlib.pyplot as plt
 from PreProcess import *
-from KMeans import *
+from KMean import *
 #from pre import model
 import os
 
@@ -113,7 +113,7 @@ class GUI:
             tkMessageBox.showerror("K Means Clustering", "invalid numbers")
             return
 
-        cluster = KMeans(self.df, clusNum,runsNum)
+        cluster = KMean(self.df, clusNum,runsNum)
         self.df=cluster.df
         #set scatter plot
         path=r'./scatterPlt.gif'
