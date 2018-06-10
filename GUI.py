@@ -19,9 +19,11 @@ import numpy as np
 import matplotlib as plt
 from scipy.stats import mode
 from Tkinter import Tk, Label, Button, Entry, IntVar, END, W, E
+import matplotlib.pyplot as plt
 
 from PreProcess import *
 from KMeans import *
+#from pre import model
 
 class GUI:
 
@@ -40,12 +42,12 @@ class GUI:
         #Num of clusters k
         self.numOfClusLabel = Label(master, text="Num of clusters k:")
         vcmd = master.register(self.validate)  # we have to wrap the command
-        self.numOfClusEntry = Entry(master, validate="key", validatecommand=(vcmd, '%P'))
+        self.numOfClusEntry = Entry(master, validate="key")
 
         #Num of runs
         self.numOfRunsLabel = Label(master, text="Num of runs:")
         vcmd = master.register(self.validate)  # we have to wrap the command
-        self.numOfRunsEntry = Entry(master, validate="key", validatecommand=(vcmd, '%P'))
+        self.numOfRunsEntry = Entry(master, validate="key")
 
         #pre process
         self.prePro_button = Button(master, text="Pre-Process", command=lambda: self.preProc())
@@ -85,18 +87,23 @@ class GUI:
         self.df=pd.read_excel(self.filename)
 
     def preProc(self):
-        dataCleaner = PreProcess(dataframe)
+        dataCleaner = PreProcess(self.df)
         self.df=dataCleaner.df
         #alert user
         tkMessageBox.showinfo("K Means Clustering", "Preprocessing completed successfully!")
         pass
 
     def kMeans(self):
-        cluster = KMeans(self.df, int(self.numOfClusEntry.getint()), int(self.numOfRunsEntry.getint()))
+        cluster = KMeans(self.df, int(self.numOfClusEntry.get()), int(self.numOfRunsEntry.get()))
         self.df=cluster.df
+        #set scatter plot
+        path=r'./scatterPlt.gif'
+        scatterPlt=PhotoImage(file=path)
+        self.scatterLbl=Label(image=scatterPlt)
+        self.scatterLbl.image=scatterPlt
+        self.scatterLbl.grid(row=6, column=2)
         #alert user
-        tkMessageBox.showinfo("K Means Clustering", "Preprocessing completed successfully!")
-        pass
+        #tkMessageBox.showinfo("K Means Clustering", "Preprocessing completed successfully!")
 
 
 root = Tk()

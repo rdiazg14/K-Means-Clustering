@@ -27,5 +27,5 @@ class PreProcess:
         del self.df["year"]
 
 
-dataframe=pd.read_excel("D:\\data.xlsx")
-dataCleaner = PreProcess(dataframe)
+#dataframe=pd.read_excel("D:\\data.xlsx")
+#dataCleaner = PreProcess(dataframe)
