@@ -81,9 +81,15 @@ class GUI:
             return False'''
 
     def browse(self):
-        self.filename = tkFileDialog.askopenfilename()
-        self.pathEntry.insert(0,self.filename)
-        self.df=pd.read_excel(self.filename)
+        self.datapath = tkFileDialog.askopenfilename()
+        self.pathEntry.insert(0,self.datapath)
+        if(not self.datapath):
+            tkMessageBox.showinfo("K Means Clustering", "Please choose data file")
+            return
+        if (not (self.datapath[-5:] == ".xlsx" or self.datapath[-4:] == ".xls")):
+            tkMessageBox.showinfo("K Means Clustering", "Please choose excel file")
+            return
+        self.df=pd.read_excel(self.datapath)
 
     def preProc(self):
         dataCleaner = PreProcess(self.df)
@@ -93,7 +99,21 @@ class GUI:
         pass
 
     def kMeans(self):
-        cluster = KMeans(self.df, int(self.numOfClusEntry.get()), int(self.numOfRunsEntry.get()))
+        try:
+            clusNum=int(self.numOfClusEntry.get())
+            if(clusNum<=0):
+                tkMessageBox.showerror("K Means Clustering", "Number of clusters must be positive")
+                return
+
+            runsNum=int(self.numOfRunsEntry.get())
+            if (runsNum <= 0):
+                tkMessageBox.showerror("K Means Clustering", "Number of runs must be positive")
+                return
+        except Exception:
+            tkMessageBox.showerror("K Means Clustering", "invalid numbers")
+            return
+
+        cluster = KMeans(self.df, clusNum,runsNum)
         self.df=cluster.df
         #set scatter plot
         path=r'./scatterPlt.gif'
