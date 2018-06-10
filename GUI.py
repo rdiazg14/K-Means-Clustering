@@ -13,17 +13,16 @@ except ImportError:
 import tkFileDialog
 import tkMessageBox
 from Tkinter import *
-
 import pandas as pd
 import numpy as np
 import matplotlib as plt
 from scipy.stats import mode
 from Tkinter import Tk, Label, Button, Entry, IntVar, END, W, E
 import matplotlib.pyplot as plt
-
 from PreProcess import *
 from KMeans import *
 #from pre import model
+import os
 
 class GUI:
 
@@ -70,7 +69,7 @@ class GUI:
 
         self.cluster_button.grid(row=5, column=1)
 
-    def validate(self, new_text):
+
         '''if not new_text:  # the field is being cleared
             self.entered_number = 0
             return True
@@ -102,10 +101,23 @@ class GUI:
         self.scatterLbl=Label(image=scatterPlt)
         self.scatterLbl.image=scatterPlt
         self.scatterLbl.grid(row=6, column=2)
+        #set map plot
+        path=r'./mapPLT.gif'
+        mapPlt=PhotoImage(file=path)
+        self.mapLbl=Label(image=mapPlt)
+        self.mapLbl.image=mapPlt
+        self.mapLbl.grid(row=6, column=1)
         #alert user
-        #tkMessageBox.showinfo("K Means Clustering", "Preprocessing completed successfully!")
+        tkMessageBox.showinfo("K Means Clustering", "Clustering completed successfully!")
 
 
 root = Tk()
 my_gui = GUI(root)
+
+def on_closing():
+    if tkMessageBox.askokcancel("Quit", "Are you sure?"):
+        root.destroy()
+        os._exit(0)
+
+root.protocol("WM_DELETE_WINDOW", on_closing)
 root.mainloop()
