@@ -81,8 +81,10 @@ class GUI:
             return False'''
 
     def browse(self):
+        #get data file and path for saving
         self.datapath = tkFileDialog.askopenfilename()
         self.pathEntry.insert(0,self.datapath)
+        #check valid path and file
         if(not self.datapath):
             tkMessageBox.showinfo("K Means Clustering", "Please choose data file")
             return
@@ -93,14 +95,14 @@ class GUI:
         if (self.df.empty or 'year' not in self.df.columns or 'country' not in self.df.columns or 'Generosity' not in self.df.columns or 'Social support' not in self.df.columns):
             tkMessageBox.showerror("K Means Clustering", "Invalid Excel File!")
             return
-
+    #pre process
     def preProc(self):
         dataCleaner = PreProcess(self.df)
         self.df=dataCleaner.df
         #alert user
         tkMessageBox.showinfo("K Means Clustering", "Preprocessing completed successfully!")
         pass
-
+    #clustering
     def kMeans(self):
         try:
             clusNum=int(self.numOfClusEntry.get())
@@ -116,16 +118,16 @@ class GUI:
             tkMessageBox.showerror("K Means Clustering", "invalid numbers")
             return
 
-        cluster = KMean(self.df, clusNum,runsNum)
+        cluster = KMean(self.df, clusNum,runsNum, self.datapath)
         self.df=cluster.df
         #set scatter plot
-        path=r'./scatterPlt.gif'
+        path= os.path.dirname(os.path.abspath(self.datapath))+'\\scatterPlt.gif'
         scatterPlt=PhotoImage(file=path)
         self.scatterLbl=Label(image=scatterPlt)
         self.scatterLbl.image=scatterPlt
         self.scatterLbl.grid(row=6, column=2)
         #set map plot
-        path=r'./mapPLT.gif'
+        path=os.path.dirname(os.path.abspath(self.datapath))+'\\mapPLT.gif'
         mapPlt=PhotoImage(file=path)
         self.mapLbl=Label(image=mapPlt)
         self.mapLbl.image=mapPlt

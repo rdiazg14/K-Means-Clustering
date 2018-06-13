@@ -8,16 +8,18 @@ from sklearn.cluster import KMeans
 #import plotly.plotly as py
 from PIL import Image
 import plotly.plotly as py
-
+import os
 
 class KMean:
     df = pd.DataFrame({})
     kMean=pd.DataFrame({})
     scatterPlot=None
+    path=None
 
-    def __init__(self, dataFrame, k, runs):
+    def __init__(self, dataFrame, k, runs,path):
         self.df=dataFrame
         self.kMean=KMeans(n_clusters=k, n_init=runs).fit(self.df)
+        self.savepath=os.path.dirname(os.path.abspath(path))
         #self.df['cluster']=self.kMean.labels_
         #print (self.df)
         temper=self.kMean.predict(self.df)
@@ -29,15 +31,16 @@ class KMean:
     def printScatter(self):
         #create scatter
         self.scatterPlot=plt.scatter(x=self.df["Social support"], y=self.df["Generosity"], c=self.df["cluster"])
+        plt.colorbar()
         plt.title("K-Means Clustering")
         plt.xlabel("Social support")
         plt.ylabel("Generosity")
 
         #save scatter as image
-        plt.savefig("scatterPlt.png")
-        im = Image.open("scatterPlt.png")
+        plt.savefig(self.savepath+'\\scatterPlt.png')
+        im = Image.open(self.savepath+'\\scatterPlt.png')
         im = im.convert('RGB').convert('P', palette=Image.ADAPTIVE)
-        im.save('scatterPlt.gif')
+        im.save(self.savepath+'\\scatterPlt.gif')
 
     # save Map as image
 
@@ -73,7 +76,7 @@ class KMean:
         py.sign_in("sarfatyl","AAk5mt9UQlWdoE7aOiZ7")
         fig = dict(data=data, layout=layout)
         py.iplot(fig, filename='d3-cloropleth-map',auto_open=False)
-        py.image.save_as(fig, filename="mapPLT.png")
-        temp=Image.open("mapPLT.png")
+        py.image.save_as(fig, filename=self.savepath+'\\mapPLT.png')
+        temp=Image.open(self.savepath+'\\mapPLT.png')
         temp = temp.convert('RGB').convert('P', palette=Image.ADAPTIVE)
-        temp.save('mapPLT.gif')
+        temp.save(self.savepath+'\\mapPLT.gif')
